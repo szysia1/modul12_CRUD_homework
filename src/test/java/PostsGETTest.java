@@ -42,10 +42,6 @@ public class PostsGETTest {
 
         assertEquals(1, (Integer) json.get("userId"));
         assertEquals("sunt aut facere repellat provident occaecati excepturi optio reprehenderit", json.get("title"));
-        assertEquals(, json.get("body"));
+        assertEquals("quia et suscipit\nnsuscipit recusandae consequuntur expedita et cum\nnreprehenderit molestiae ut ut quas totam\nnnostrum rerum est autem sunt rem eveniet architecto", json.get("body"));
     }
 }
-
-
-{   "body": "quia et suscipit\nsuscipit recusandae consequuntur expedita et cum\nreprehenderit molestiae ut ut quas totam\nnostrum rerum est autem sunt rem eveniet architecto"
-        }
