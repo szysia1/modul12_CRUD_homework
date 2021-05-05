@@ -53,7 +53,7 @@ public class EmailsEndWithPlTest {
     }
 
     @Test
-    public void readAllUsers() {
+    public void EmailsEndWithPlLoop() {
         Response response = given()
                 .when()
                 .get("https://jsonplaceholder.typicode.com/users")
