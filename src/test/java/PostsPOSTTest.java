@@ -16,6 +16,8 @@ public class PostsPOSTTest {
     private Integer fakeUserId;
     private String fakeTitle;
     private String fakeBody;
+    private final String BASE_URL = "https://jsonplaceholder.typicode.com";
+    private final String POSTS = "posts";
 
     @BeforeAll
     public static void beforeAll() {
@@ -30,7 +32,7 @@ public class PostsPOSTTest {
     }
 
     @Test
-    public void jsonplaceholderCreateNewUser() {
+    public void CreateNewPostTest() {
 
 
         JSONObject post = new JSONObject();
@@ -42,7 +44,7 @@ public class PostsPOSTTest {
                 .contentType("application/json")
                 .body(post.toString())
                 .when()
-                .post("https://jsonplaceholder.typicode.com/posts")
+                .post(BASE_URL+"/"+POSTS)
                 .then()
                 .statusCode(HttpStatus.SC_CREATED)
                 .extract()

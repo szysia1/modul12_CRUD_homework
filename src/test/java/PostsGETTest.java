@@ -1,8 +1,6 @@
 import io.restassured.path.json.JsonPath;
 import io.restassured.response.Response;
 import org.apache.http.HttpStatus;
-import org.json.JSONObject;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 import static io.restassured.RestAssured.given;
@@ -14,7 +12,7 @@ public class PostsGETTest {
     private final String POSTS = "posts";
 
     @Test
-    public void readAllPosts() {
+    public void readAllPostsTest() {
         Response response = given()
                 .when()
                 .get(BASE_URL + "/" + POSTS)
@@ -29,7 +27,7 @@ public class PostsGETTest {
     }
 
     @Test
-    public void readOnePost() {
+    public void readOnePostTest() {
         Response response = given()
                 .when()
                 .get(BASE_URL + "/" + POSTS + "/1")
@@ -42,6 +40,46 @@ public class PostsGETTest {
 
         assertEquals(1, (Integer) json.get("userId"));
         assertEquals("sunt aut facere repellat provident occaecati excepturi optio reprehenderit", json.get("title"));
-        assertEquals("quia et suscipit\nnsuscipit recusandae consequuntur expedita et cum\nnreprehenderit molestiae ut ut quas totam\nnnostrum rerum est autem sunt rem eveniet architecto", json.get("body"));
+        assertEquals("quia et suscipit\nsuscipit recusandae consequuntur expedita et cum\nreprehenderit molestiae ut ut quas totam\nnostrum rerum est autem sunt rem eveniet architecto", json.get("body"));
+    }
+
+    @Test
+    public void readOnePostWithPathVariablesTest() {
+        Response response = given()
+                .pathParam("postId", 1)
+                .when()
+                .get(BASE_URL + "/" + POSTS + "/{postId}")
+                .then()
+                .statusCode(HttpStatus.SC_OK)
+                .extract()
+                .response();
+
+        JsonPath json = response.jsonPath();
+
+        assertEquals(1, (Integer) json.get("userId"));
+        assertEquals("sunt aut facere repellat provident occaecati excepturi optio reprehenderit", json.get("title"));
+        assertEquals("quia et suscipit\nsuscipit recusandae consequuntur expedita et cum\nreprehenderit molestiae ut ut quas totam\nnostrum rerum est autem sunt rem eveniet architecto", json.get("body"));
+
+        System.out.println(response.asString());
+    }
+
+    @Test
+    public void readOnePostWithQueryParamsTest() {
+        Response response = given()
+                .queryParam("title", "sunt aut facere repellat provident occaecati excepturi optio reprehenderit")
+                .when()
+                .get(BASE_URL + "/" + POSTS)
+                .then()
+                .statusCode(HttpStatus.SC_OK)
+                .extract()
+                .response();
+
+        JsonPath json = response.jsonPath();
+
+        assertEquals(1, (Integer) json.getList("userId").get(0));
+        assertEquals("sunt aut facere repellat provident occaecati excepturi optio reprehenderit", json.getList("title").get(0));
+        assertEquals("quia et suscipit\nsuscipit recusandae consequuntur expedita et cum\nreprehenderit molestiae ut ut quas totam\nnostrum rerum est autem sunt rem eveniet architecto", json.getList("body").get(0));
+
+        System.out.println(response.asString());
     }
 }
